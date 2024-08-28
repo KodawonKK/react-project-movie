@@ -9,26 +9,35 @@
   <script type="text/babel">
     const root = document.getElementById("root");
     let counter = 0;
-    function App() {
+    function MinutesToHours() {
       const [amount, setAmount] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(false);
+      const [invert, setInvert] = React.useState(false);
       const onChange = (event) => {
         setAmount(event.target.value);
       };
       const reset = () => setAmount(0);
       const onFlip = () => {
         reset();
-        setFlipped((current) => !current);
+        setInvert((current) => !current);
       };
       return (
         <div>
           <h1 className="hi">Super Converter</h1>
           <label htmlFor="minutes">Minutes</label>
-          <input disabled={flipped} placeholder="Minutes" id="minutes" value={flipped ? amount * 60 : amount} type="number" onChange={onChange} />
+          <input disabled={invert} placeholder="Minutes" id="minutes" value={invert ? amount * 60 : amount} type="number" onChange={onChange} />
           <label htmlFor="hours">Hours</label>
-          <input disabled={!flipped} placeholder="Hours" id="hours" type="number" onChange={onChange} value={flipped ? amount : Math.round(amount / 60)} />
+          <input disabled={!invert} placeholder="Hours" id="hours" type="number" onChange={onChange} value={invert ? amount : Math.round(amount / 60)} />
           <button onClick={reset}>reset</button>
-          <button onClick={onFlip}>Fliped</button>
+          <button onClick={onFlip}>{invert ? "Turn back" : "Invert"}</button>
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div>
+          <h1 className="hi">Super Converter</h1>
+          <MinutesToHours />
         </div>
       );
     }
