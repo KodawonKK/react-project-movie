@@ -6,30 +6,35 @@
   <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script type="text/babel">
-    function Btn({ big, text }) {
-      console.log(big, text);
+    function Btn({ text, onClick }) {
       return (
         <button
+          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
-            borderRadius: 10,
-            fontSize: big ? 18 : 16
+            borderRadius: 10
           }}
         >
           {text}
         </button>
       );
     }
-
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired
+    };
+    const MemorizedBtn = React.memo(Btn);
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <Btn text="Save Changes " x={false} big={false} />
-          <Btn text="Continue" y={7} />
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
