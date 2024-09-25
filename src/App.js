@@ -1,33 +1,33 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
-  const onChange = (event) => setToDo(event.target.value);
-  const onSubmit = (event) => {
-    event.preventDefault();
-    if (toDo === "") {
-      return;
-    }
-    setToDo("");
-    setToDos((currentArray) => [toDo, ...currentArray]);
-    //이전값을 계속 배열에 추가 해줌
-  };
-  console.log(toDos);
-  console.log(toDos.map((item, idx) => <li key={idx}>{item}</li>));
+  const [loading, setLodading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLodading(false);
+        console.log(json);
+      });
+  }, []);
   return (
     <div>
-      <h1>my toDoList {toDos.length}</h1>
-      <form>
-        <input onChange={onChange} value={toDo} type="text" placeholder="Write어쩌고 " />
-        <button onClick={onSubmit}>Add To dO</button>
-      </form>
-      <hr />
-      <ul>
-        {toDos.map((item, idx) => (
-          <li key={idx}>{item}</li>
-        ))}
-      </ul>
+      <h1>The coins!{loading ? "" : coins.length}</h1>
+      <input></input>
+      <button>Search</button>
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <select>
+          {coins.map((coin) => (
+            <option key={coin.id}>
+              {coin.name} ({coin.symbol}) : {coin.quotes.USD.price}
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   );
 }
