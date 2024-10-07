@@ -13,7 +13,6 @@ function Home() {
   useEffect(() => {
     getMovies();
   }, []);
-  console.log(movies);
   return (
     <div>
       {loading ? (
@@ -21,7 +20,7 @@ function Home() {
       ) : (
         <div>
           {movies.map((movie) => (
-            <Movie key={movie.id} coverImg={movie.medium_cover_image} title={movie.title} summary={movie.summary} genres={movie.genres} />
+            <Movie key={movie.id} id={movie.id} coverImg={movie.medium_cover_image} title={movie.title} summary={movie.summary} genres={movie.genres} />
           ))}
         </div>
       )}
@@ -30,6 +29,7 @@ function Home() {
 }
 
 Movie.propTypes = {
+  id: PropTypes.number.isRequired,
   coverImg: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   summary: PropTypes.string.isRequired,
